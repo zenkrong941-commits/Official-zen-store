@@ -1,461 +1,814 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Zen TopUp Store</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      background: #020617;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-    .glass {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .card-hover:hover {
-      transform: translateY(-4px);
-      transition: 0.25s ease;
-    }
-    .hide-scroll::-webkit-scrollbar {
-      display: none;
-    }
-    .hide-scroll {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen TopUp Store - Fast Gaming Recharge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a23 0%, #1a1a3d 50%, #0f0f2a 100%);
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header/Hero */
+        .hero {
+            text-align: center;
+            padding: 60px 0 80px;
+            background: radial-gradient(circle at center, rgba(0, 150, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, #00d4ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: #a0a0ff;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .global-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #00ff88, #00cc66);
+            color: #000;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 255, 136, 0.4);
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, #ffffff, #d0d0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #0099ff);
+            color: #fff;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.8);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #00d4ff;
+            border: 2px solid rgba(0, 212, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        }
+
+        /* Games Section */
+        .games-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 60px;
+            background: linear-gradient(45deg, #ffffff, #a0a0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .game-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .game-card:hover::before {
+            left: 100%;
+        }
+
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 212, 255, 0.3);
+            border-color: rgba(0, 212, 255, 0.5);
+        }
+
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #ffffff;
+        }
+
+        .packages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+        }
+
+        .package-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .package-card:hover {
+            background: rgba(0, 212, 255, 0.15);
+            transform: scale(1.05);
+            border-color: #00d4ff;
+            box-shadow: 0 10px 25px rgba(0, 212, 255, 0.3);
+        }
+
+        .package-amount {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #00ff88;
+            margin-bottom: 8px;
+        }
+
+        .package-price {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Support Section */
+        .support-section {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .support-card {
+            text-align: center;
+            padding: 40px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .support-icon {
+            font-size: 3rem;
+            background: linear-gradient(45deg, #00d4ff, #ff6b9d);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        /* FAQ */
+        .faq-section {
+            padding: 80px 0;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.05);
+            margin-bottom: 20px;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .faq-question {
+            padding: 25px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(0, 212, 255, 0.1);
+        }
+
+        .faq-answer {
+            padding: 0 30px 25px;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .faq-answer.active {
+            max-height: 200px;
+            padding: 25px 30px;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 50px 0 30px;
+            text-align: center;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 20px;
+            color: #00d4ff;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none;
+            margin-bottom: 10px;
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .payment-method {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(135deg, #1a1a3d 0%, #0a0a23 100%);
+            padding: 40px;
+            border-radius: 25px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 30px 80px rgba(0, 212, 255, 0.3);
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #ffffff;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #a0a0ff;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            font-size: 1rem;
+        }
+
+        .form-group input::placeholder {
+            color: #888;
+        }
+
+        .payment-info {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .upi-details {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+
+            .games-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .packages-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 12px;
+            }
+
+            .modal-content {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+        }
+    </style>
 </head>
-<body class="min-h-screen">
-
-  <!-- Floating WhatsApp -->
-  <a href="https://wa.me/916003028648" target="_blank"
-    class="fixed bottom-5 right-5 z-50 bg-green-500 hover:bg-green-400 text-black p-4 rounded-full shadow-2xl text-2xl">
-    💬
-  </a>
-
-  <!-- Header -->
-  <header class="sticky top-0 z-40 backdrop-blur border-b border-white/10 bg-slate-950/90">
-    <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="h-12 w-12 rounded-2xl bg-gradient-to-br from-cyan-400 via-blue-500 to-indigo-600 flex items-center justify-center shadow-xl">
-          <span class="text-xl font-black text-white">Z</span>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="logo">Zen TopUp</div>
+            <div class="subtitle">Fast, Trusted & Premium Gaming Recharge</div>
+            <div class="global-badge">Global</div>
+            <h1 class="hero-title">Top-Up Diamonds, UC, CP, Robux & More</h1>
+            <div class="hero-buttons">
+                <a href="#games" class="btn btn-primary">🛒 Shop Games</a>
+                <a href="https://wa.me/916003028648" class="btn btn-secondary" target="_blank">💬 Chat Support</a>
+            </div>
         </div>
-        <div>
-          <h1 class="text-2xl font-black tracking-tight">Zen TopUp Store</h1>
-          <p class="text-xs text-slate-400">Fast, Trusted & Premium Gaming Recharge</p>
-        </div>
-      </div>
+    </section>
 
-      <div class="hidden md:flex items-center gap-4">
-        <a href="#support" class="text-sm text-slate-300 hover:text-white">Customer Care</a>
-        <a href="#faq" class="text-sm text-slate-300 hover:text-white">FAQ</a>
-        <a href="https://instagram.com/official_zen_store" target="_blank" class="text-sm text-slate-300 hover:text-white">Instagram</a>
-      </div>
+    <!-- Games Section -->
+    <section id="games" class="games-section">
+        <div class="container">
+            <h2 class="section-title">Browse Games</h2>
+            <div id="gamesGrid" class="games-grid"></div>
+        </div>
+    </section>
+
+    <!-- Support Section -->
+    <section class="support-section">
+        <div class="container">
+            <div class="support-grid">
+                <div class="support-card">
+                    <div class="support-icon">🕒</div>
+                    <h3>24/7 Customer Care</h3>
+                    <p>Instant support via WhatsApp. We're here whenever you need us.</p>
+                </div>
+                <div class="support-card">
+                    <div class="support-icon">🔒</div>
+                    <h3>Safe Order Process</h3>
+                    <p>Secure payments and verified deliveries. Your account is protected.</p>
+                </div>
+                <div class="support-card">
+                    <div class="support-icon">⚡</div>
+                    <h3>Fast Response</h3>
+                    <p>Lightning quick replies and instant top-ups. No waiting around.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-item">
+                <div class="faq-question">
+                    How long does delivery take?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    Most orders are delivered within 5-15 minutes. Premium passes may take up to 30 minutes.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    What details do I need to place an order?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    Your Name, Player ID/UID, and 12-digit Payment UTR after payment.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    What if payment is done but order is delayed?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    Contact us immediately on WhatsApp with your UTR. We'll prioritize your order.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    Do you support global orders?
+                    <span>+</span>
+                </div>
+                <div class="faq-answer">
+                    Yes! We serve customers worldwide with instant global delivery.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Zen TopUp Store</h3>
+                    <p>Fast • Trusted • Global Gaming Recharge</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Get In Touch</h3>
+                    <div class="social-links">
+                        <a href="https://wa.me/916003028648" target="_blank">📱 WhatsApp</a>
+                        <a href="https://instagram.com/official_zen_store" target="_blank">📸 Instagram</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Payment Methods</h3>
+                    <div class="payment-methods">
+                        <span class="payment-method">Paytm</span>
+                        <span class="payment-method">Google Pay</span>
+                        <span class="payment-method">PhonePe</span>
+                        <span class="payment-method">FamPay</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Payment Modal -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 style="margin-bottom: 25px; color: #00d4ff;">Complete Your Order</h2>
+            
+            <div class="payment-info">
+                <div style="font-size: 1.3rem; font-weight: 700; margin-bottom: 15px;" id="orderSummary"></div>
+                <div class="upi-details">
+                    <span><strong>Mehek Rao</strong></span>
+                    <span id="upiId">zen941@ptyes</span>
+                </div>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button onclick="copyUPI()" class="btn btn-secondary" style="flex: 1; min-width: 120px;">Copy UPI</button>
+                    <button onclick="copyAmount()" class="btn btn-secondary" style="flex: 1; min-width: 120px;">Copy Amount</button>
+                    <a id="upiPayLink" class="btn btn-primary" style="flex: 1; min-width: 120px; text-align: center;">Pay via UPI</a>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" id="customerName" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label>Player ID / UID</label>
+                <input type="text" id="playerId" placeholder="Enter your Player ID/UID" required>
+            </div>
+            <div class="form-group">
+                <label>12-digit Payment Ref / UTR</label>
+                <input type="text" id="paymentUtr" placeholder="Enter 12-digit UTR after payment" required>
+            </div>
+
+            <button onclick="confirmOrder()" class="btn btn-primary" style="width: 100%; padding: 20px; font-size: 1.2rem;">
+                ✅ Confirm Payment & Place Order
+            </button>
+        </div>
     </div>
-  </header>
 
-  <!-- Hero -->
-  <section class="max-w-7xl mx-auto px-4 pt-10 pb-8">
-    <div class="grid lg:grid-cols-2 gap-8 items-center">
-      <div>
-        <span class="inline-block mb-4 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/20 px-4 py-2 text-sm">
-          India • Bangladesh • US • Philippines • Global
-        </span>
-
-        <h2 class="text-4xl md:text-6xl font-black leading-tight">
-          Top-Up Diamonds, UC, CP, Robux & More
-        </h2>
-
-        <p class="mt-4 text-slate-300 text-lg max-w-xl">
-          Premium gaming recharge store for MLBB, BGMI, CODM, Roblox, HOK, Genshin and COC.
-        </p>
-
-        <div class="mt-6 flex flex-wrap gap-3">
-          <a href="#games" class="rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-6 py-3 font-bold">Shop Games</a>
-          <a href="https://wa.me/916003028648" target="_blank" class="rounded-2xl border border-white/20 px-6 py-3 font-bold">Chat Support</a>
-        </div>
-
-        <div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div class="glass rounded-3xl p-4 text-sm text-slate-200">Trusted Checkout</div>
-          <div class="glass rounded-3xl p-4 text-sm text-slate-200">Fast Support</div>
-          <div class="glass rounded-3xl p-4 text-sm text-slate-200">Best Rates</div>
-          <div class="glass rounded-3xl p-4 text-sm text-slate-200">Mobile Friendly</div>
-        </div>
-      </div>
-
-      <div class="rounded-[2rem] border border-cyan-500/20 bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-950 p-6 shadow-2xl">
-        <div class="flex items-center gap-2 text-sm text-slate-300 mb-4">✨ Premium Checkout Experience</div>
-        <div class="grid grid-cols-2 gap-4">
-          <div class="rounded-2xl bg-white/5 border border-white/10 p-5 text-center font-semibold">Paytm</div>
-          <div class="rounded-2xl bg-white/5 border border-white/10 p-5 text-center font-semibold">GPay</div>
-          <div class="rounded-2xl bg-white/5 border border-white/10 p-5 text-center font-semibold">PhonePe</div>
-          <div class="rounded-2xl bg-white/5 border border-white/10 p-5 text-center font-semibold">FamPay</div>
-        </div>
-
-        <div class="mt-6 rounded-3xl bg-white/5 border border-white/10 p-5">
-          <p class="text-sm text-slate-400">Support Channels</p>
-          <div class="mt-3 flex flex-wrap gap-3">
-            <a href="https://wa.me/916003028648" target="_blank" class="rounded-2xl bg-green-500 hover:bg-green-400 text-black px-5 py-3 font-bold">WhatsApp</a>
-            <a href="https://instagram.com/official_zen_store" target="_blank" class="rounded-2xl border border-white/20 px-5 py-3 font-bold">Instagram</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Browse Games -->
-  <section id="games" class="max-w-7xl mx-auto px-4 pb-6">
-    <div class="rounded-[2rem] border border-white/10 bg-white/5 p-5 overflow-hidden">
-      <div class="flex items-center justify-between mb-4 gap-4 flex-col md:flex-row">
-        <h3 class="text-xl font-bold">Browse Games</h3>
-        <input id="searchInput" type="text" placeholder="Search games..."
-          class="w-full max-w-sm px-4 py-3 rounded-2xl bg-slate-900 border border-white/10 outline-none" />
-      </div>
-
-      <div id="gameTabs" class="flex gap-4 overflow-x-auto pb-2 hide-scroll"></div>
-    </div>
-  </section>
-
-  <!-- Packages -->
-  <section class="max-w-7xl mx-auto px-4 pb-10">
-    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
-      <div>
-        <h3 id="gameTitle" class="text-2xl font-black">Mobile Legends</h3>
-        <p class="text-slate-400">Choose your region and package</p>
-      </div>
-      <div id="regionTabs" class="flex flex-wrap gap-2"></div>
-    </div>
-
-    <div id="packsContainer" class="grid md:grid-cols-2 xl:grid-cols-3 gap-5"></div>
-  </section>
-
-  <!-- Support -->
-  <section id="support" class="max-w-7xl mx-auto px-4 pb-10">
-    <div class="grid lg:grid-cols-3 gap-5">
-      <div class="glass rounded-[2rem] p-6">
-        <div class="text-2xl">🎧</div>
-        <h4 class="mt-4 text-xl font-bold">24/7 Customer Care</h4>
-        <p class="mt-2 text-slate-400">Need help with payment, order confirmation or delay?</p>
-      </div>
-
-      <div class="glass rounded-[2rem] p-6">
-        <div class="text-2xl">🛡️</div>
-        <h4 class="mt-4 text-xl font-bold">Safe Order Process</h4>
-        <p class="mt-2 text-slate-400">Only share Player ID / UID. Never share your password.</p>
-      </div>
-
-      <div class="glass rounded-[2rem] p-6">
-        <div class="text-2xl">✅</div>
-        <h4 class="mt-4 text-xl font-bold">Fast Response</h4>
-        <p class="mt-2 text-slate-400">Support available on WhatsApp and Instagram.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section id="faq" class="max-w-5xl mx-auto px-4 pb-20">
-    <div class="text-center mb-8">
-      <h3 class="text-3xl font-black">Frequently Asked Questions</h3>
-      <p class="text-slate-400 mt-2">Everything your customers usually ask before ordering.</p>
-    </div>
-
-    <div class="glass rounded-[2rem] p-6 space-y-4">
-      <details class="glass rounded-2xl p-4">
-        <summary class="font-bold cursor-pointer">How long does delivery take?</summary>
-        <p class="text-slate-400 mt-2">Most orders are processed quickly after payment confirmation. During peak hours, some orders may take longer.</p>
-      </details>
-
-      <details class="glass rounded-2xl p-4">
-        <summary class="font-bold cursor-pointer">What details do I need to place an order?</summary>
-        <p class="text-slate-400 mt-2">Usually your Player ID / UID only. Never share your password.</p>
-      </details>
-
-      <details class="glass rounded-2xl p-4">
-        <summary class="font-bold cursor-pointer">What if payment is done but order is delayed?</summary>
-        <p class="text-slate-400 mt-2">Contact Zen Customer Care on WhatsApp or Instagram with your payment screenshot and payment reference / UTR number.</p>
-      </details>
-
-      <details class="glass rounded-2xl p-4">
-        <summary class="font-bold cursor-pointer">Do you support India and Global orders?</summary>
-        <p class="text-slate-400 mt-2">Yes. Region options are available depending on the game and package you choose.</p>
-      </details>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="border-t border-white/10 bg-slate-950/80">
-    <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-4 gap-6">
-      <div>
-        <h4 class="text-xl font-black">Zen TopUp Store</h4>
-        <p class="text-sm text-slate-400 mt-2">Premium gaming top-up storefront with easy support and clean checkout.</p>
-      </div>
-
-      <div>
-        <h5 class="font-semibold">Support</h5>
-        <div class="mt-3 space-y-2 text-sm text-slate-400">
-          <a href="https://wa.me/916003028648" class="block">WhatsApp</a>
-          <a href="https://instagram.com/official_zen_store" class="block">Instagram</a>
-        </div>
-      </div>
-
-      <div>
-        <h5 class="font-semibold">Payments</h5>
-        <div class="mt-3 space-y-2 text-sm text-slate-400">
-          <div>Paytm</div>
-          <div>PhonePe</div>
-          <div>Google Pay</div>
-          <div>FamPay</div>
-        </div>
-      </div>
-
-      <div>
-        <h5 class="font-semibold">Quick Links</h5>
-        <div class="mt-3 space-y-2 text-sm text-slate-400">
-          <a href="#faq" class="block">FAQ</a>
-          <a href="#support" class="block">Customer Care</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-
-  <!-- Payment Modal -->
-  <div id="paymentModal" class="fixed inset-0 bg-black/70 hidden items-center justify-center z-50 p-4">
-    <div class="bg-slate-950 text-white border border-white/10 rounded-[2rem] max-w-xl w-full p-6 relative max-h-[90vh] overflow-y-auto">
-      <button onclick="closeModal()" class="absolute top-4 right-4 text-white text-xl">✕</button>
-
-      <h2 class="text-2xl font-black mb-2">Complete Your Order</h2>
-      <p class="text-slate-400 mb-5">Pay the exact amount below, then submit your payment reference to confirm.</p>
-
-      <div class="rounded-3xl border border-cyan-500/20 bg-cyan-500/10 p-4 mb-5">
-        <p class="text-sm font-semibold text-cyan-300">Payment Options</p>
-        <p class="mt-1 text-sm text-slate-300">Scan the QR code or pay directly using your UPI app. The amount should match your selected package exactly.</p>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-5 mb-5">
-        <div class="rounded-3xl bg-white p-3">
-          <img src="qr-paytm-zen.jpg" alt="Zen Store QR" class="rounded-2xl w-full h-auto" />
-        </div>
-
-        <div class="rounded-3xl bg-white/5 border border-white/10 p-5 space-y-3">
-          <div><p class="text-sm text-slate-400">Game</p><p id="modalGame" class="font-semibold"></p></div>
-          <div><p class="text-sm text-slate-400">Region</p><p id="modalRegion" class="font-semibold"></p></div>
-          <div><p class="text-sm text-slate-400">Package</p><p id="modalPack" class="font-semibold"></p></div>
-          <div><p class="text-sm text-slate-400">Amount</p><p id="modalAmount" class="font-black text-3xl"></p></div>
-          <div><p class="text-sm text-slate-400">Pay To</p><p class="font-semibold">Mehek Rao</p></div>
-          <div><p class="text-sm text-slate-400">UPI ID</p><p class="font-semibold">zen941@ptyes</p></div>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-3 mb-5">
-        <a id="upiPayBtn" href="#" class="w-full rounded-2xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 px-5 py-3 font-bold text-center">
-          Pay Exact Amount via UPI App
-        </a>
-
-        <div class="grid grid-cols-2 gap-3">
-          <button onclick="copyText('zen941@ptyes')" class="rounded-2xl border border-white/20 px-4 py-3">Copy UPI</button>
-          <button id="copyAmountBtn" class="rounded-2xl border border-white/20 px-4 py-3">Copy Amount</button>
-        </div>
-      </div>
-
-      <div class="grid md:grid-cols-2 gap-3 mb-3">
-        <input id="customerName" placeholder="Your Name" class="rounded-2xl bg-slate-900 border border-white/10 px-4 py-3 outline-none" />
-        <input id="playerId" placeholder="Player ID / UID" class="rounded-2xl bg-slate-900 border border-white/10 px-4 py-3 outline-none" />
-      </div>
-
-      <div class="grid gap-3 mb-4">
-        <input id="utrNumber" placeholder="12-digit Payment Ref / UTR" class="rounded-2xl bg-slate-900 border border-white/10 px-4 py-3 outline-none" />
-      </div>
-
-      <div class="rounded-3xl bg-white/5 border border-white/10 p-4 text-sm text-slate-300 mb-5">
-        <p>After payment, enter the 12-digit payment reference / UTR number to confirm your payment faster.</p>
-        <p class="mt-2">After payment, send screenshot and order details to customer care.</p>
-      </div>
-
-      <a id="confirmPaymentBtn" href="#" target="_blank"
-        class="block w-full rounded-2xl bg-green-500 hover:bg-green-400 text-slate-950 px-5 py-4 font-bold text-center">
-        Confirm Payment
-      </a>
-    </div>
-  </div>
-
-  <script>
-    const WHATSAPP = "916003028648";
-    const UPI_ID = "zen941@ptyes";
-    const UPI_NAME = "Mehek Rao";
-
-    const regions = ["India", "Bangladesh", "US", "Philippines", "Global"];
-
-    const games = [
-      {
-        id: "mlbb",
-        name: "Mobile Legends",
-        short: "MLBB",
-        icon: "💎",
-        packs: {
-          India: [["86 Diamonds", 79], ["172 Diamonds", 149], ["257 Diamonds", 219], ["344 Diamonds", 289], ["429 Diamonds", 359], ["514 Diamonds", 429], ["706 Diamonds", 579], ["878 Diamonds", 719], ["1412 Diamonds", 1149], ["2195 Diamonds", 1769], ["Weekly Pass", 135], ["Twilight Pass", 459], ["Starlight", 649]],
-          Bangladesh: [["86 Diamonds", 95], ["172 Diamonds", 185], ["257 Diamonds", 270], ["344 Diamonds", 355], ["706 Diamonds", 699], ["Weekly Pass", 169]],
-          US: [["86 Diamonds", 99], ["172 Diamonds", 189], ["257 Diamonds", 279], ["344 Diamonds", 365], ["706 Diamonds", 749], ["Weekly Pass", 179]],
-          Philippines: [["86 Diamonds", 89], ["172 Diamonds", 169], ["257 Diamonds", 249], ["344 Diamonds", 329], ["706 Diamonds", 649], ["Weekly Pass", 159]],
-          Global: [["86 Diamonds", 92], ["172 Diamonds", 175], ["257 Diamonds", 259], ["344 Diamonds", 339], ["706 Diamonds", 669], ["Weekly Pass", 165]]
-        }
-      },
-      {
-        id: "bgmi",
-        name: "BGMI / PUBG",
-        short: "BGMI",
-        icon: "🎯",
-        packs: {
-          India: [["60 UC", 75], ["325 UC", 379], ["660 UC", 699], ["1800 UC", 1799], ["3850 UC", 3599]],
-          Global: [["60 UC", 79], ["325 UC", 399], ["660 UC", 729], ["1800 UC", 1849]],
-          Bangladesh: [["60 UC", 79], ["325 UC", 395], ["660 UC", 725]],
-          US: [["60 UC", 89], ["325 UC", 425], ["660 UC", 779]],
-          Philippines: [["60 UC", 82], ["325 UC", 405], ["660 UC", 745]]
-        }
-      },
-      {
-        id: "codm",
-        name: "Call of Duty Mobile",
-        short: "CODM",
-        icon: "⚡",
-        packs: {
-          India: [["80 CP", 89], ["420 CP", 429], ["880 CP", 799], ["2400 CP", 1999]],
-          Global: [["80 CP", 95], ["420 CP", 449], ["880 CP", 849], ["2400 CP", 2099]],
-          Bangladesh: [["80 CP", 92], ["420 CP", 439], ["880 CP", 825]],
-          US: [["80 CP", 99], ["420 CP", 459], ["880 CP", 865]],
-          Philippines: [["80 CP", 93], ["420 CP", 445], ["880 CP", 835]]
-        }
-      },
-      {
-        id: "roblox",
-        name: "Roblox",
-        short: "Roblox",
-        icon: "🧱",
-        packs: {
-          India: [["80 Robux", 89], ["400 Robux", 359], ["800 Robux", 699], ["1700 Robux", 1399]],
-          Global: [["80 Robux", 95], ["400 Robux", 379], ["800 Robux", 729], ["1700 Robux", 1459]],
-          Bangladesh: [["80 Robux", 92], ["400 Robux", 369], ["800 Robux", 719]],
-          US: [["80 Robux", 99], ["400 Robux", 389], ["800 Robux", 739]],
-          Philippines: [["80 Robux", 94], ["400 Robux", 375], ["800 Robux", 725]]
-        }
-      },
-      {
-        id: "hok",
-        name: "Honor of Kings",
-        short: "HOK",
-        icon: "👑",
-        packs: {
-          India: [["80 Tokens", 85], ["400 Tokens", 399], ["800 Tokens", 769]],
-          Global: [["80 Tokens", 89], ["400 Tokens", 419], ["800 Tokens", 799]]
-        }
-      },
-      {
-        id: "genshin",
-        name: "Genshin Impact",
-        short: "Genshin",
-        icon: "🌙",
-        packs: {
-          India: [["60 Genesis", 89], ["300+30 Genesis", 429], ["980+110 Genesis", 1249], ["Blessing", 429]],
-          Global: [["60 Genesis", 95], ["300+30 Genesis", 449], ["Blessing", 449]]
-        }
-      },
-      {
-        id: "coc",
-        name: "Clash of Clans",
-        short: "COC",
-        icon: "🛡️",
-        packs: {
-          India: [["80 Gems", 79], ["500 Gems", 389], ["1200 Gems", 749], ["Gold Pass", 499]],
-          Global: [["80 Gems", 85], ["500 Gems", 409], ["1200 Gems", 779], ["Gold Pass", 529]]
-        }
-      }
-    ];
-
-    let selectedGame = games[0];
-    let selectedRegion = "India";
-    let selectedPack = null;
-
-    const gameTabs = document.getElementById("gameTabs");
-    const regionTabs = document.getElementById("regionTabs");
-    const packsContainer = document.getElementById("packsContainer");
-    const gameTitle = document.getElementById("gameTitle");
-    const searchInput = document.getElementById("searchInput");
-
-    function renderGames(filter = "") {
-      gameTabs.innerHTML = "";
-      const filtered = games.filter(g =>
-        (g.name + g.short).toLowerCase().includes(filter.toLowerCase())
-      );
-
-      filtered.forEach(g => {
-        const btn = document.createElement("button");
-        btn.className = `min-w-[170px] rounded-3xl border p-5 text-left transition card-hover ${
-          selectedGame.id === g.id
-            ? "border-cyan-400 bg-cyan-500/10"
-            : "border-white/10 bg-slate-900/70 hover:bg-white/5"
-        }`;
-        btn.innerHTML = `
-          <div class="text-3xl">${g.icon}</div>
-          <div class="mt-3 font-bold">${g.short}</div>
-          <div class="text-sm text-slate-400">${g.name}</div>
-        `;
-        btn.onclick = () => {
-          selectedGame = g;
-          selectedRegion = g.packs["India"] ? "India" : Object.keys(g.packs)[0];
-          renderGames(searchInput.value);
-          renderRegions();
-          renderPacks();
+    <script>
+        // Game data
+        const gamesData = {
+            'Mobile Legends': [
+                { amount: '86 Diamonds', price: '₹75' },
+                { amount: '172 Diamonds', price: '₹139' },
+                { amount: '257 Diamonds', price: '₹205' },
+                { amount: '344 Diamonds', price: '₹269' },
+                { amount: '429 Diamonds', price: '₹335' },
+                { amount: '514 Diamonds', price: '₹399' },
+                { amount: '706 Diamonds', price: '₹549' },
+                { amount: '878 Diamonds', price: '₹679' },
+                { amount: '1412 Diamonds', price: '₹1099' },
+                { amount: '2195 Diamonds', price: '₹1699' },
+                { amount: 'Weekly Pass', price: '₹125' },
+                { amount: 'Twilight Pass', price: '₹429' },
+                { amount: 'Starlight', price: '₹619' }
+            ],
+            'BGMI / PUBG': [
+                { amount: '60 UC', price:'₹72' },
+                { amount: '325 UC', price: '₹369' },
+                { amount: '660 UC', price: '₹679' },
+                { amount: '1800 UC', price: '₹1749' },
+                { amount: '3850 UC', price: '₹3499' }
+            ],
+            'Call of Duty Mobile': [
+                { amount: '80 CP', price: '₹85' },
+                { amount: '420 CP', price: '₹419' },
+                { amount: '880 CP', price: '₹779' },
+                { amount: '2400 CP', price: '₹1949' }
+            ],
+            'Roblox': [
+                { amount: '80 Robux', price: '₹85' },
+                { amount: '400 Robux', price: '₹349' },
+                { amount: '800 Robux', price: '₹679' },
+                { amount: '1700 Robux', price: '₹1369' }
+            ],
+            'Honor of Kings': [
+                { amount: '80 Tokens', price: '₹82' },
+                { amount: '400 Tokens', price: '₹389' },
+                { amount: '800 Tokens', price: '₹749' }
+            ],
+            'Genshin Impact': [
+                { amount: '60 Genesis', price: '₹85' },
+                { amount: '300+30 Genesis', price: '₹419' },
+                { amount: '980+110 Genesis', price: '₹1219' },
+                { amount: 'Blessing', price: '₹419' }
+            ],
+            'Clash of Clans': [
+                { amount: '80 Gems', price: '₹75' },
+                { amount: '500 Gems', price: '₹379' },
+                { amount: '1200 Gems', price: '₹729' },
+                { amount: 'Gold Pass', price: '₹479' }
+            ]
         };
-        gameTabs.appendChild(btn);
-      });
-    }
 
-    function renderRegions() {
-      regionTabs.innerHTML = "";
-      const availableRegions = Object.keys(selectedGame.packs);
+        let selectedGame = '';
+        let selectedPackage = '';
+        let selectedPrice = '';
 
-      availableRegions.forEach(region => {
-        const btn = document.createElement("button");
-        btn.className = `px-4 py-2 rounded-2xl border ${
-          selectedRegion === region
-            ? "bg-cyan-500 text-black border-cyan-400"
-            : "bg-white/5 border-white/10"
-        }`;
-        btn.textContent = region;
-        btn.onclick = () => {
-          selectedRegion = region;
-          renderRegions();
-          renderPacks();
+        // Render games
+        function renderGames() {
+            const gamesGrid = document.getElementById('gamesGrid');
+            Object.keys(gamesData).forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <div class="game-title">${game}</div>
+                    <div class="packages-grid" data-game="${game}"></div>
+                `;
+                gamesGrid.appendChild(gameCard);
+
+                // Render packages for this game
+                const packagesGrid = gameCard.querySelector('.packages-grid');
+                gamesData[game].forEach(pkg => {
+                    const packageCard = document.createElement('div');
+                    packageCard.className = 'package-card';
+                    packageCard.innerHTML = `
+                        <div class="package-amount">${pkg.amount}</div>
+                        <div class="package-price">${pkg.price}</div>
+                    `;
+                    packageCard.onclick = () => selectPackage(game, pkg.amount, pkg.price);
+                    packagesGrid.appendChild(packageCard);
+                });
+            });
+        }
+
+        // Select package
+        function selectPackage(game, amount, price) {
+            selectedGame = game;
+            selectedPackage = amount;
+            selectedPrice = price.replace('₹', '');
+            openModal();
+            updateModal();
+        }
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.getElementById('customerName').value = '';
+            document.getElementById('playerId').value = '';
+            document.getElementById('paymentUtr').value = '';
+        }
+
+        function updateModal() {
+            const orderSummary = document.getElementById('orderSummary');
+            orderSummary.innerHTML = `${selectedGame}<br><small>${selectedPackage} - ${selectedPrice} INR</small>`;
+            
+            const upiPayLink = document.getElementById('upiPayLink');
+            const upiUrl = `upi://pay?pa=zen941@ptyes&pn=Mehek%20Rao&am=${selectedPrice}&cu=INR`;
+            upiPayLink.href = upiUrl;
+        }
+
+        function copyUPI() {
+            navigator.clipboard.writeText('zen941@ptyes');
+            alert('UPI ID copied! Open your UPI app and paste.');
+        }
+
+        function copyAmount() {
+            navigator.clipboard.writeText(selectedPrice);
+            alert('Amount copied!');
+        }
+
+        function confirmOrder() {
+            const customerName = document.getElementById('customerName').value;
+            const playerId = document.getElementById('playerId').value;
+            const paymentUtr = document.getElementById('paymentUtr').value;
+
+            if (!customerName || !playerId || !paymentUtr) {
+                alert('Please fill all fields');
+                return;
+            }
+
+            const message = `🛒 *New Order - Zen TopUp Store*
+
+🎮 *Game:* ${selectedGame}
+📦 *Package:* ${selectedPackage}
+💰 *Price:* ${selectedPrice} INR
+👤 *Customer:* ${customerName}
+🆔 *Player ID:* ${playerId}
+📄 *UTR:* ${paymentUtr}
+
+Please process this order ASAP!`;
+
+            const whatsappUrl = `https://wa.me/916003028648?text=${encodeURIComponent(message)}`;
+            window.open(whatsappUrl, '_blank');
+            closeModal();
+        }
+
+        // FAQ toggle
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.onclick = function() {
+                const answer = this.nextElementSibling;
+                const icon = this.querySelector('span');
+                
+                if (answer.classList.contains('active')) {
+                    answer.classList.remove('active');
+                    icon.textContent = '+';
+                } else {
+                    document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('active'));
+                    document.querySelectorAll('.faq-question span').forEach(s => s.textContent = '+');
+                    answer.classList.add('active');
+                    icon.textContent = '−';
+                }
+            };
+        });
+
+        // Modal close
+        document.querySelector('.close').onclick = closeModal;
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                closeModal();
+            }
         };
-        regionTabs.appendChild(btn);
-      });
-    }
 
-    function renderPacks() {
-      gameTitle.textContent = selectedGame.name;
-      packsContainer.innerHTML = "";
+        // Smooth scroll
+        document.querySelector('.btn-primary[href="#games"]').addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('games').scrollIntoView({ behavior: 'smooth' });
+        });
 
-      const packs = selectedGame.packs[selectedRegion] || [];
-
-      if (!packs.length) {
-        packsContainer.innerHTML = `
-          <div class="glass rounded-3xl p-6 text-slate-300">
-            No packs available for this region.
-          </div>
-        `;
-        return;
-      }
-
-      packs.forEach((pack, i) => {
-        const [label, price] = pack;
-
-        const card = document.createElement("div");
-        card.className = "card-hover";
-        card.innerHTML = `
-          <div class="rounded-[2rem] bg-gradient-to-br from-slate-900 to-slate-800 border border-white/10 overflow-hidden p-6 h-full">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="text-sm text-cyan-300">${se
+        // Initialize
+        window.onload = function() {
+            renderGames();
+        };
+    </script>
+</body>
+</html>
